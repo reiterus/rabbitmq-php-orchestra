@@ -1,5 +1,6 @@
 {
   "require": {
+    "ext-xmlreader": "*",
     "php-amqplib/php-amqplib": ">=3.0"
   }
 }
