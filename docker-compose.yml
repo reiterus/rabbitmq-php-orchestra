@@ -1,0 +1,90 @@
+version: '3.4'
+
+services:
+  builder:
+    container_name: builder
+    image: ${RMQ_IMAGE}
+    build:
+      context: .
+    volumes:
+      - ./:/app
+    working_dir: /app
+    restart: on-failure
+    env_file:
+      - .env
+    environment:
+      - RMQ_IS_BUILDER=1
+  case_hello:
+    container_name: case_hello
+    image: ${RMQ_IMAGE}:latest
+    volumes:
+      - ./:/app
+    working_dir: /app
+    restart: on-failure
+    env_file:
+      - .env
+    depends_on:
+      - builder
+      - rabbitmq
+    links:
+      - rabbitmq
+  case_fanout:
+    container_name: case_fanout
+    image: ${RMQ_IMAGE}:latest
+    volumes:
+      - ./:/app
+    working_dir: /app
+    restart: on-failure
+    env_file:
+      - .env
+    environment:
+      - RMQ_CASE=fanout
+    depends_on:
+      - builder
+      - rabbitmq
+    links:
+      - rabbitmq
+  case_direct:
+    container_name: case_direct
+    image: ${RMQ_IMAGE}:latest
+    volumes:
+      - ./:/app
+    working_dir: /app
+    restart: on-failure
+    env_file:
+      - .env
+    environment:
+      - RMQ_CASE=direct
+    depends_on:
+      - builder
+      - rabbitmq
+    links:
+      - rabbitmq
+  case_topic:
+    container_name: case_topic
+    image: ${RMQ_IMAGE}:latest
+    volumes:
+      - ./:/app
+    working_dir: /app
+    restart: on-failure
+    env_file:
+      - .env
+    environment:
+      - RMQ_CASE=topic
+    depends_on:
+      - builder
+      - rabbitmq
+    links:
+      - rabbitmq
+  rabbitmq:
+    image: rabbitmq:3.10.25-management
+    hostname: rabbitmq
+    container_name: rabbitmq
+    restart: always
+    depends_on:
+      - builder
+    env_file:
+      - .env
+    ports:
+      - "${RMQ_PORT_ADMIN}:15672"
+      - "${RMQ_PORT}:5672"
