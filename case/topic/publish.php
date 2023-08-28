@@ -10,19 +10,13 @@ use PhpAmqpLib\Message\AMQPMessage;
 $connection = new AMQPStreamConnection($rmqHost, $rmqPort, $rmqLogin, $rmqPassword);
 $channel = $connection->channel();
 
-$channel->exchange_declare('topic_logs', 'topic', false, false, false);
+$channel->exchange_declare('rpo_topic', 'topic', false, false, false);
 
-$routing_key = !empty($argv[1]) ? $argv[1] : 'red.rabbit';
-
-$data = implode(' ', array_slice($argv, 2));
-
-if (empty($data)) {
-    $data = ' > '.uniqid(). " > Topic Exchange Data from publisher";
-}
+$routing_key = 'red.rabbit';
+$data = uniqid(). " > Topic Exchange Data from ".__FILE__;
 
 $msg = new AMQPMessage($data);
-
-$channel->basic_publish($msg, 'topic_logs', $routing_key);
+$channel->basic_publish($msg, 'rpo_topic', $routing_key);
 
 echo ' [x] Sent Topic ', $routing_key, ': ', $data, "\n";
 

@@ -14,7 +14,7 @@ echo " [*] Waiting hello tasks...\n";
 $callback = function ($msg) {
     loadSimulation();
     echo ' [x] Received ', $msg->body, "\n";
-    $data = time().' '.$msg->body."\n";
+    $data = $msg->body."\n";
     $fnm = 'case_hello_'.date('Y-m-d_H-i-s').'.txt';
     file_put_contents($fnm, $data);
     changeRights($fnm);

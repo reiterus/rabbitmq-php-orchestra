@@ -3,6 +3,8 @@ publish_all: ; make publish ; make publish_direct ; make publish_fanout ; make p
 publish_direct: ; docker-compose exec case_direct php case/direct/publish.php
 publish_fanout: ; docker-compose exec case_fanout php case/fanout/publish.php
 publish_topic: ; docker-compose exec case_topic php case/topic/publish.php
+logs: ; docker-compose logs -ft
+ps: ; docker-compose ps
 down: ; docker-compose down
 sdown: ; docker-compose down ; rm -f *.txt
 fdown: ; docker-compose down ; rm -f *.txt ; rm -rf vendor

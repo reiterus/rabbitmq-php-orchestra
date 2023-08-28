@@ -10,19 +10,13 @@ use PhpAmqpLib\Message\AMQPMessage;
 $connection = new AMQPStreamConnection($rmqHost, $rmqPort, $rmqLogin, $rmqPassword);
 $channel = $connection->channel();
 
-$channel->exchange_declare('direct_logs', 'direct', false, false, false);
+$channel->exchange_declare('rpo_direct', 'direct', false, false, false);
 
-$severity = !empty($argv[1]) ? $argv[1] : 'info';
-
-$data = implode(' ', array_slice($argv, 2));
-
-if (empty($data)) {
-    $data = ' > '.uniqid(). " > Direct Exchange Data from publisher";
-}
+$severity = 'info';
+$data = uniqid(). " > Direct Exchange Data from ".__FILE__;
 
 $msg = new AMQPMessage($data);
-
-$channel->basic_publish($msg, 'direct_logs', $severity);
+$channel->basic_publish($msg, 'rpo_direct', $severity);
 
 echo ' [x] Sent Direct ', $data, "\n";
 

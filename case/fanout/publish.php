@@ -10,17 +10,11 @@ use PhpAmqpLib\Message\AMQPMessage;
 $connection = new AMQPStreamConnection($rmqHost, $rmqPort, $rmqLogin, $rmqPassword);
 $channel = $connection->channel();
 
-$channel->exchange_declare('logs', 'fanout', false, false, false);
-
-$data = implode(' ', array_slice($argv, 1));
-
-if (empty($data)) {
-    $data = ' > '.uniqid(). " > Fanout Exchange Data from publisher";
-}
+$channel->exchange_declare('rpo_fanout', 'fanout', false, false, false);
+$data = uniqid(). " > Fanout Exchange Data from ".__FILE__;
 
 $msg = new AMQPMessage($data);
-
-$channel->basic_publish($msg, 'logs');
+$channel->basic_publish($msg, 'rpo_fanout');
 
 echo ' [x] Sent Fanout: ', $data, "\n";
 

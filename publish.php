@@ -9,12 +9,7 @@ $connection = new AMQPStreamConnection($rmqHost, $rmqPort, $rmqLogin, $rmqPasswo
 $channel = $connection->channel();
 
 $channel->queue_declare('hello', false, false, false, false);
-
-$data = implode(' ', array_slice($argv, 1));
-
-if (empty($data)) {
-    $data = ' > '.uniqid(). " > Just Said \"Hello\"...";
-}
+$data = uniqid(). " > Just Said \"Hello\"... from ".__FILE__;
 
 $msg = new AMQPMessage($data);
 $channel->basic_publish($msg, '', 'hello');

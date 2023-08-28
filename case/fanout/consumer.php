@@ -8,18 +8,18 @@ use PhpAmqpLib\Connection\AMQPStreamConnection;
 $connection = new AMQPStreamConnection($rmqHost, $rmqPort, $rmqLogin, $rmqPassword);
 $channel = $connection->channel();
 
-$channel->exchange_declare('logs', 'fanout', false, false, false);
+$channel->exchange_declare('rpo_fanout', 'fanout', false, false, false);
 
 list($queue_name, , ) = $channel->queue_declare("", false, false, true, false);
 
-$channel->queue_bind($queue_name, 'logs');
+$channel->queue_bind($queue_name, 'rpo_fanout');
 
 echo " [*] Waiting Fanout tasks...\n";
 
 $callback = function ($msg) use ($level) {
     loadSimulation();
     echo ' [x] Fanout Received ', $msg->body, "\n";
-    $data = time().' '.$msg->body."\n";
+    $data = $msg->body."\n";
     $fnm = $level.'/'.'case_fanout_'.date('Y-m-d_H-i-s').'.txt';
     file_put_contents($fnm, $data);
     changeRights($fnm);
