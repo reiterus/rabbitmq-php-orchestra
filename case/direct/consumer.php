@@ -8,9 +8,9 @@ use PhpAmqpLib\Connection\AMQPStreamConnection;
 $connection = new AMQPStreamConnection($rmqHost, $rmqPort, $rmqLogin, $rmqPassword);
 $channel = $connection->channel();
 
-$channel->exchange_declare('rpo_direct', 'direct', false, false, false);
+$channel->exchange_declare('rpo_direct', 'direct', false, false, true);
 
-list($queue_name, , ) = $channel->queue_declare("", false, false, true, false);
+list($queue_name, , ) = $channel->queue_declare("", false, false, true, true);
 $severities = ['info'];
 
 foreach ($severities as $severity) {

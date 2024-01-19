@@ -8,7 +8,7 @@ use PhpAmqpLib\Message\AMQPMessage;
 $connection = new AMQPStreamConnection($rmqHost, $rmqPort, $rmqLogin, $rmqPassword);
 $channel = $connection->channel();
 
-$channel->queue_declare('hello', false, false, false, false);
+$channel->queue_declare('hello', false, false, false, true);
 $data = uniqid(). " > Just Said \"Hello\"... from ".__FILE__;
 
 $msg = new AMQPMessage($data);

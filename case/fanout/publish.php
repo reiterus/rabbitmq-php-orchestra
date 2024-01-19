@@ -10,7 +10,7 @@ use PhpAmqpLib\Message\AMQPMessage;
 $connection = new AMQPStreamConnection($rmqHost, $rmqPort, $rmqLogin, $rmqPassword);
 $channel = $connection->channel();
 
-$channel->exchange_declare('rpo_fanout', 'fanout', false, false, false);
+$channel->exchange_declare('rpo_fanout', 'fanout', false, false, true);
 $data = uniqid(). " > Fanout Exchange Data from ".__FILE__;
 
 $msg = new AMQPMessage($data);

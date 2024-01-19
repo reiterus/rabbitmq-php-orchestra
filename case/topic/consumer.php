@@ -8,9 +8,9 @@ use PhpAmqpLib\Connection\AMQPStreamConnection;
 $connection = new AMQPStreamConnection($rmqHost, $rmqPort, $rmqLogin, $rmqPassword);
 $channel = $connection->channel();
 
-$channel->exchange_declare('rpo_topic', 'topic', false, false, false);
+$channel->exchange_declare('rpo_topic', 'topic', false, false, true);
 
-list($queue_name, , ) = $channel->queue_declare("", false, false, true, false);
+list($queue_name, , ) = $channel->queue_declare("", false, false, true, true);
 
 $binding_keys = ['*.rabbit'];
 foreach ($binding_keys as $binding_key) {

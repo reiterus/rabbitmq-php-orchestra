@@ -10,7 +10,7 @@ use PhpAmqpLib\Message\AMQPMessage;
 $connection = new AMQPStreamConnection($rmqHost, $rmqPort, $rmqLogin, $rmqPassword);
 $channel = $connection->channel();
 
-$channel->exchange_declare('rpo_direct', 'direct', false, false, false);
+$channel->exchange_declare('rpo_direct', 'direct', false, false, true);
 
 $severity = 'info';
 $data = uniqid(). " > Direct Exchange Data from ".__FILE__;

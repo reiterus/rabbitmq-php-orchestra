@@ -8,9 +8,9 @@ use PhpAmqpLib\Connection\AMQPStreamConnection;
 $connection = new AMQPStreamConnection($rmqHost, $rmqPort, $rmqLogin, $rmqPassword);
 $channel = $connection->channel();
 
-$channel->exchange_declare('rpo_fanout', 'fanout', false, false, false);
+$channel->exchange_declare('rpo_fanout', 'fanout', false, false, true);
 
-list($queue_name, , ) = $channel->queue_declare("", false, false, true, false);
+list($queue_name, , ) = $channel->queue_declare("", false, false, true, true);
 
 $channel->queue_bind($queue_name, 'rpo_fanout');
 

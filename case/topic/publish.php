@@ -10,7 +10,7 @@ use PhpAmqpLib\Message\AMQPMessage;
 $connection = new AMQPStreamConnection($rmqHost, $rmqPort, $rmqLogin, $rmqPassword);
 $channel = $connection->channel();
 
-$channel->exchange_declare('rpo_topic', 'topic', false, false, false);
+$channel->exchange_declare('rpo_topic', 'topic', false, false, true);
 
 $routing_key = 'red.rabbit';
 $data = uniqid(). " > Topic Exchange Data from ".__FILE__;
